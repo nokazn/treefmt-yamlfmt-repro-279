@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  check-formats:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - name: Run yamlfmt
+        run: |
+          echo "No.1:"
+          nix develop --command yamlfmt --lint example.yaml || :
+          nix develop --command yamlfmt example.yaml
+          echo "No.2:"
+          nix develop --command yamlfmt --lint example.yaml || :
+          nix develop --command yamlfmt example.yaml
+          echo "No.3:"
+          nix develop --command yamlfmt --lint example.yaml || :
+          nix develop --command yamlfmt example.yaml
+          echo "No.4:"
+          nix develop --command yamlfmt --lint example.yaml || :
+          nix develop --command yamlfmt example.yaml
+          echo "No.5:"
+          nix develop --command yamlfmt --lint example.yaml || :
+          nix develop --command yamlfmt example.yaml
+      - name: Run treefmt
+        run: |
+          echo "No.1:"
+          nix develop --command treefmt --no-cache
+          sleep 1
+          echo "No.2:"
+          nix develop --command treefmt --no-cache
+          sleep 1
+          echo "No.3:"
+          nix develop --command treefmt --no-cache
+          sleep 1
+          echo "No.4:"
+          nix develop --command treefmt --no-cache
+          sleep 1
+          echo "No.5:"
+          nix develop --command treefmt --no-cache
+          sleep 1
